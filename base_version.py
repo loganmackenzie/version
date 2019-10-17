@@ -81,7 +81,9 @@ class BaseVersion(_Comparable):
             elif self.pre_release or other.pre_release:
                 return bool(self.pre_release)
             assert not 'reachable'
-        return self._revisions() < other._revisions()
+        if len(self._revisions()) == len(other._revisions()):
+            return self._revisions() < other._revisions()
+        return len(self._revisions()) < len(other._revisions())
 
     def __eq__(self, other):
         self._assume_to_be_comparable(other)

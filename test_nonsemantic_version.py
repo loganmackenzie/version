@@ -3,7 +3,7 @@ from pytest import raises
 from base_version import VersionError
 from nonsemantic_version import NonSemanticVersion
 
-'''
+
 def test_nonsemantic_versions():
     """Test revisions
 
@@ -24,24 +24,25 @@ def test_nonsemantic_versions():
     assert str(NonSemanticVersion('999.999.999.999')) == '999.999.999.999'
     assert repr(NonSemanticVersion('999.999.999.999')) == "NonSemanticVersion('999.999.999.999')"
     assert str(NonSemanticVersion('999.abc.999.999')) == '999.abc.999.999'
-    assert repr(NonSemanticVersion('999.abc.999.999')) == "NonSemanticVersion('999.abc.999.999f')"
-    assert str(NonSemanticVersion('999.abc.999.999f')) == '999.abc.999.999'
+    assert repr(NonSemanticVersion('999.abc.999.999')) == "NonSemanticVersion('999.abc.999.999')"
+    assert str(NonSemanticVersion('999.abc.999.999f')) == '999.abc.999.999f'
     assert repr(NonSemanticVersion('999.abc.999.999f')) == "NonSemanticVersion('999.abc.999.999f')"
 
     with raises(VersionError):
-        NonSemanticVersion('X.Y.Z')
+        NonSemanticVersion('_._._')
+    with raises(VersionError):
+        NonSemanticVersion('..')
 
     assert NonSemanticVersion('1.2.3.4')._revisions() == [(1, ''), (2, ''), (3, ''), (4, '')]
     assert NonSemanticVersion('1a.2b.3c.4d')._revisions() == [(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')]
-    assert NonSemanticVersion('1.2.3.f')._revisions() == [(1, ''), (2, ''), (3, ''), (None, '')]
+    assert NonSemanticVersion('1.2.3.f')._revisions() == [(1, ''), (2, ''), (3, ''), (None, 'f')]
 
     assert NonSemanticVersion('1.9.0') < NonSemanticVersion('1.10.0') < NonSemanticVersion('1.11.0')
     assert NonSemanticVersion('1.9.0.3') < NonSemanticVersion('1.10.0.1') < NonSemanticVersion('1.11.0.f')
     assert NonSemanticVersion('1.9.0.3') < NonSemanticVersion('1.10.0.1') < NonSemanticVersion('1.11.0.f')
-    assert NonSemanticVersion('2.9.0') < NonSemanticVersion('1.10.0.0') < NonSemanticVersion('a.0.0.3')
+    assert NonSemanticVersion('2.9.0') < NonSemanticVersion('1.10.0.0') < NonSemanticVersion('12.0.0.3')
     assert NonSemanticVersion('1.9.0.3') < NonSemanticVersion('1.9.0.4') < NonSemanticVersion('1.9.0.f')
     assert NonSemanticVersion('13') < NonSemanticVersion('1.0') < NonSemanticVersion('1.0.1')
-
 
 
 def test_section_10():
@@ -144,4 +145,3 @@ def test_comparing_against_non_version():
     with raises(TypeError) as exception:
         NonSemanticVersion('1.0.0') == object()
     assert 'cannot compare' in repr(exception.value)
-'''
