@@ -1,4 +1,4 @@
-from __future__ import print_function
+"""Base version class"""
 import sys
 import re
 
@@ -9,7 +9,6 @@ else:
 
 
 class _Comparable(object):
-
     """Rich comparison operators based on __lt__ and __eq__."""
 
     __gt__ = lambda self, other: not self < other and not self == other
@@ -22,15 +21,7 @@ class VersionError(Exception):
     pass
 
 
-_re = re.compile('^'
-                 '(\d+)\.(\d+)\.(\d+)'  # minor, major, patch
-                 '(-[0-9A-Za-z-\.]+)?'  # pre-release
-                 '(\+[0-9A-Za-z-\.]+)?'  # build
-                 '$')
-
-
 class _Seq(_Comparable):
-
     """Sequence of identifies that could be compared according to semver."""
 
     def __init__(self, seq):
@@ -54,45 +45,29 @@ class _Seq(_Comparable):
         return self.seq == other.seq
 
 
-def _try_int(s):
-    assert type(s) is str
-    try:
-        return int(s)
-    except ValueError:
-        return s
+class BaseVersion(_Comparable):
+    """ Base version class """
+    REVISION_DELIMITER = '.'
+    PRE_RELEASE_DELIMITER = '-'
+    BUILD_DELIMITER = '+'
 
-
-def _make_group(g):
-    return [] if g is None else list(map(_try_int, g[1:].split('.')))
-
-
-class Version(_Comparable):
-
-    def __init__(self, version):
-        match = _re.match(version)
-        if not match:
-            raise VersionError('invalid version %r' % version)
-        self.major, self.minor, self.patch = map(int, match.groups()[:3])
-        self.pre_release = _make_group(match.group(4))
-        self.build = _make_group(match.group(5))
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError('%s cannot be instantiated.' % self.__class__.__name__)
 
     def __str__(self):
-        s = '.'.join(str(s) for s in self._mmp())
+        s = self.REVISION_DELIMITER.join(self._str_rev(rev) for rev in self._revisions())
         if self.pre_release:
-            s += '-%s' % '.'.join(str(s) for s in self.pre_release)
+            s += self.PRE_RELEASE_DELIMITER + self.REVISION_DELIMITER.join(str(s) for s in self.pre_release)
         if self.build:
-            s += '+%s' % '.'.join(str(s) for s in self.build)
+            s += self.BUILD_DELIMITER + self.REVISION_DELIMITER.join(str(s) for s in self.build)
         return s
 
     def __repr__(self):
         return '%s(%r)' % (self.__class__.__name__, self.__str__())
 
-    def _mmp(self):
-        return [self.major, self.minor, self.patch]
-
     def __lt__(self, other):
         self._assume_to_be_comparable(other)
-        if self._mmp() == other._mmp():
+        if self._revisions() == other._revisions():
             if self.pre_release == other.pre_release:
                 if self.build == other.build:
                     return False
@@ -106,17 +81,29 @@ class Version(_Comparable):
             elif self.pre_release or other.pre_release:
                 return bool(self.pre_release)
             assert not 'reachable'
-        return self._mmp() < other._mmp()
+        return self._revisions() < other._revisions()
 
     def __eq__(self, other):
         self._assume_to_be_comparable(other)
-        return all([self._mmp() == other._mmp(),
+        return all([self._revisions() == other._revisions(),
                     self.build == other.build,
                     self.pre_release == other.pre_release])
 
     def _assume_to_be_comparable(self, other):
-        if not isinstance(other, Version):
+        if not isinstance(other, self.__class__):
             raise TypeError('cannot compare `%r` with `%r`' % (self, other))
 
+    def _make_group(self, g):
+        return [] if g is None else list(map(self._try_int, g[1:].split(self.REVISION_DELIMITER)))
 
-__version__ = str(Version('0.1.2'))
+    @staticmethod
+    def _try_int(s):
+        assert isinstance(s, str)
+        try:
+            return int(s)
+        except ValueError:
+            return s
+
+    @staticmethod
+    def _str_rev(rev):
+        return str(rev)
