@@ -1,6 +1,7 @@
 from pytest import raises
 
-from version import Version, VersionError
+from versioning.base_version import VersionError
+from versioning.semantic_version import SemanticVersion
 
 
 def test_section_2():
@@ -15,19 +16,19 @@ def test_section_2():
 
     """
 
-    assert str(Version('0.0.0')) == '0.0.0'
-    assert repr(Version('0.0.0')) == "Version('0.0.0')"
-    assert str(Version('999.999.999')) == '999.999.999'
-    assert repr(Version('999.999.999')) == "Version('999.999.999')"
+    assert str(SemanticVersion('0.0.0')) == '0.0.0'
+    assert repr(SemanticVersion('0.0.0')) == "SemanticVersion('0.0.0')"
+    assert str(SemanticVersion('999.999.999')) == '999.999.999'
+    assert repr(SemanticVersion('999.999.999')) == "SemanticVersion('999.999.999')"
 
     with raises(VersionError):
-        Version('X.Y.Z')
+        SemanticVersion('X.Y.Z')
 
-    assert Version('1.2.3').major == 1
-    assert Version('1.2.3').minor == 2
-    assert Version('1.2.3').patch == 3
+    assert SemanticVersion('1.2.3').major == 1
+    assert SemanticVersion('1.2.3').minor == 2
+    assert SemanticVersion('1.2.3').patch == 3
 
-    assert Version('1.9.0') < Version('1.10.0') < Version('1.11.0')
+    assert SemanticVersion('1.9.0') < SemanticVersion('1.10.0') < SemanticVersion('1.11.0')
 
 
 def test_section_3():
@@ -40,8 +41,8 @@ def test_section_3():
     2.1.7 -> 2.2.0.
 
     """
-    assert Version('1.1.3') < Version('2.0.0')
-    assert Version('2.1.7') < Version('2.2.0')
+    assert SemanticVersion('1.1.3') < SemanticVersion('2.0.0')
+    assert SemanticVersion('2.1.7') < SemanticVersion('2.2.0')
 
 
 def test_section_10():
@@ -58,20 +59,20 @@ def test_section_10():
 
     """
 
-    assert Version('1.0.0').pre_release == []
-    assert Version('1.0.0-alpha').pre_release == ['alpha']
-    assert Version('1.0.0-alpha.1').pre_release == ['alpha', 1]
-    assert Version('1.0.0-0.3.7').pre_release == [0, 3, 7]
-    assert Version('1.0.0-x.7.z.92').pre_release == ['x', 7, 'z', 92]
-    assert str(Version('1.0.0-x.7.z.92')) == '1.0.0-x.7.z.92'
+    assert SemanticVersion('1.0.0').pre_release == []
+    assert SemanticVersion('1.0.0-alpha').pre_release == ['alpha']
+    assert SemanticVersion('1.0.0-alpha.1').pre_release == ['alpha', 1]
+    assert SemanticVersion('1.0.0-0.3.7').pre_release == [0, 3, 7]
+    assert SemanticVersion('1.0.0-x.7.z.92').pre_release == ['x', 7, 'z', 92]
+    assert str(SemanticVersion('1.0.0-x.7.z.92')) == '1.0.0-x.7.z.92'
 
     with raises(VersionError):
-        Version('1.0.0-')
+        SemanticVersion('1.0.0-')
     with raises(VersionError):
-        Version('1.0.0-$#%')
+        SemanticVersion('1.0.0-$#%')
 
-    assert Version('1.0.0') > Version('1.0.0-alpha')
-    assert Version('1.0.0-alpha') < Version('1.0.0')
+    assert SemanticVersion('1.0.0') > SemanticVersion('1.0.0-alpha')
+    assert SemanticVersion('1.0.0-alpha') < SemanticVersion('1.0.0')
 
 
 def test_section_11():
@@ -87,8 +88,8 @@ def test_section_11():
     1.3.7+build.11.e0f985a.
 
     """
-    assert Version('1.0.0+build.1').build == ['build', 1]
-    assert Version('1.0.0+build.11.e0f985a').build == ['build', 11, 'e0f985a']
+    assert SemanticVersion('1.0.0+build.1').build == ['build', 1]
+    assert SemanticVersion('1.0.0+build.11.e0f985a').build == ['build', 11, 'e0f985a']
 
 
 def test_section_12():
@@ -127,16 +128,16 @@ def test_section_12():
     from random import shuffle
     randomized = list(presorted)
     shuffle(randomized)
-    fixed = list(map(str, sorted(map(Version, randomized))))
+    fixed = list(map(str, sorted(map(SemanticVersion, randomized))))
     assert fixed == presorted
 
 
 def test_comparing_against_non_version():
 
     with raises(TypeError) as exception:
-        Version('1.0.0') > None
+        SemanticVersion('1.0.0') > None
     assert 'cannot compare' in repr(exception.value)
 
     with raises(TypeError) as exception:
-        Version('1.0.0') == object()
+        SemanticVersion('1.0.0') == object()
     assert 'cannot compare' in repr(exception.value)
