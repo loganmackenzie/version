@@ -82,17 +82,3 @@ class NonSemanticVersion(BaseVersion):
     @staticmethod
     def _str_rev(rev):
         return ''.join(['' if s is None else str(s) for s in rev])
-
-
-
-
-
-def test_parsing_and_stringification():
-    revisions = ['1', '1f', '1.2', '1.f', '1e.f', '1.2.0', '1.2.0f', '1.2e.0f', '1.2.0.1f', '1.2.0f.1f', '1.2.0f.1', '1.2e.0f.1f', '1.2.0.1.4f']
-    for rev in revisions:
-        non = NonSemanticVersion(rev)
-        print(f'{rev:<12} --> {str(non):<12} == {rev == str(non)}')
-
-if __name__ == '__main__':
-    test_parsing_and_stringification()
-    # print(NonSemanticVersion.parse('1.2.0f.1f'))

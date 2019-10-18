@@ -1,4 +1,4 @@
-"""`version` lives on `GitHub <http://github.com/loganmackenzie/version/>`_."""
+"""`versioning` lives on `GitHub <http://github.com/loganmackenzie/version/>`_."""
 from setuptools import setup
 from os import path
 
@@ -10,7 +10,7 @@ from semantic_version import __version__
 
 
 setup(
-    name='version',
+    name='versioning',
     version=__version__,
     author='Vladimir Keleshev',
     author_email='vladimir@keleshev.com',
