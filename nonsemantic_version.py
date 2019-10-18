@@ -16,7 +16,7 @@ class NonSemanticVersion(BaseVersion):
     VALIDATION_REGEX = re.compile(r'[.0-9A-Za-z-]+')
 
     def __init__(self, version):
-        self.revisions = []
+        self.revision_list = []
         self.pre_release = []
         self.build = []
         try:
@@ -28,8 +28,12 @@ class NonSemanticVersion(BaseVersion):
         except Exception:
             raise VersionError('Invalid version %r', version)
 
+    @property
+    def revisions(self):
+        return [self._str_rev(rev) for rev in self.revision_list]
+
     def _revisions(self):
-        return self.revisions
+        return self.revision_list
 
     def _parse_rev(self, rev):
         """Parse a revision"""
@@ -38,7 +42,7 @@ class NonSemanticVersion(BaseVersion):
 
     def _parse_version(self, version):
         """Parse the version"""
-        self.revisions = []
+        self.revision_list = []
         # Split at '.' until we reach either '-' or '+'
         # Build ('+') should always come after pre-release ('-')
         # Step 1: Try to split on '+' and pull the build version off.
@@ -54,9 +58,9 @@ class NonSemanticVersion(BaseVersion):
         # Step 3: Split on '.' and parse revisions until we run out.
         while self.REVISION_DELIMITER in version:
             rev, version = version.split(self.REVISION_DELIMITER, 1)
-            self.revisions.append(self._parse_rev(rev))
+            self.revision_list.append(self._parse_rev(rev))
         # Parse the last revision
-        self.revisions.append(self._parse_rev(version))
+        self.revision_list.append(self._parse_rev(version))
 
     def __lt__(self, other):
         self._assume_to_be_comparable(other)

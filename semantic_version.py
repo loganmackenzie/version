@@ -10,16 +10,16 @@ else:
 
 from base_version import BaseVersion, VersionError
 
-_re = re.compile('^'
-                 '(\d+)\.(\d+)\.(\d+)'  # minor, major, patch
-                 '(-[0-9A-Za-z-\.]+)?'  # pre-release
-                 '(\+[0-9A-Za-z-\.]+)?'  # build
-                 '$')
+_re = re.compile(r'^'
+                 r'(\d+)\.(\d+)\.(\d+)'  # minor, major, patch
+                 r'(-[0-9A-Za-z-\.]+)?'  # pre-release
+                 r'(\+[0-9A-Za-z-\.]+)?'  # build
+                 r'$')
 
 
 class SemanticVersion(BaseVersion):
     """ Manage semantic versions """
-    def __init__(self, version, strict=True):
+    def __init__(self, version):
         match = _re.match(version)
         if not match:
             raise VersionError('invalid version %r' % version)
@@ -31,4 +31,4 @@ class SemanticVersion(BaseVersion):
         return [self.major, self.minor, self.patch]
 
 
-__version__ = str(SemanticVersion('0.1.2'))
+__version__ = str(SemanticVersion('0.2.0'))
