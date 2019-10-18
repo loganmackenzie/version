@@ -8,7 +8,7 @@ else:
     from itertools import izip_longest
 
 
-from base_version import BaseVersion, VersionError
+from versioning.base_version import BaseVersion, VersionError
 
 _re = re.compile(r'^'
                  r'(\d+)\.(\d+)\.(\d+)'  # minor, major, patch

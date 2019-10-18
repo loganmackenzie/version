@@ -1,7 +1,7 @@
 from pytest import raises
 
-from base_version import VersionError
-from semantic_version import SemanticVersion
+from versioning.base_version import VersionError
+from versioning.semantic_version import SemanticVersion
 
 
 def test_section_2():

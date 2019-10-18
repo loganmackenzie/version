@@ -13,7 +13,7 @@ Example of simple X.Y.Z version:
 
 ```python
 
->>> from semantic_version import SemanticVersion
+>>> from versioning import SemanticVersion
 
 >>> v = SemanticVersion('1.2.3')
 
@@ -111,7 +111,7 @@ Example of non-semantic versioning:
 
 ```python
 
->>> from nonsemantic_version import NonSemanticVersion
+>>> from versioning import NonSemanticVersion
 
 >>> v = NonSemanticVersion('1')
 

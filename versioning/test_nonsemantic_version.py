@@ -1,7 +1,7 @@
 from pytest import raises
 
-from base_version import VersionError
-from nonsemantic_version import NonSemanticVersion
+from versioning.base_version import VersionError
+from versioning.nonsemantic_version import NonSemanticVersion
 
 
 def test_nonsemantic_versions():
