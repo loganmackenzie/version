@@ -2,18 +2,18 @@
 
 The versioning package is a fork from the [version](https://pypi.org/project/version/) package which implements semantic versioning. The primary reason for forking [version](https://pypi.org/project/version/) is to extend functionality to support a non-semantic versioning schema.
 
-    pip install versioning==0.2.0
+    pip install enhanced-versioning==0.2.1
 
 ## Semantic version implementation
 
-The `Versioning` package provides `SemanticVersion` which implements versioning as described in [Semantic Versioning spec 2.0.0-rc.1](http://semver.org).
+The `Enhanced-Versioning` package provides `SemanticVersion` which implements versioning as described in [Semantic Versioning spec 2.0.0-rc.1](http://semver.org).
 
 
 Example of simple X.Y.Z version:
 
 ```python
 
->>> from versioning import SemanticVersion
+>>> from enhanced_versioning import SemanticVersion
 
 >>> v = SemanticVersion('1.2.3')
 
@@ -111,7 +111,7 @@ Example of non-semantic versioning:
 
 ```python
 
->>> from versioning import NonSemanticVersion
+>>> from enhanced_versioning import NonSemanticVersion
 
 >>> v = NonSemanticVersion('1')
 

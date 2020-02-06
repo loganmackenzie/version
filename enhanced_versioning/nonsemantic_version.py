@@ -7,7 +7,7 @@ if sys.version_info >= (3, 0):
 else:
     from itertools import izip_longest
 
-from versioning.base_version import BaseVersion, VersionError, _Seq
+from enhanced_versioning.base_version import BaseVersion, VersionError, _Seq
 
 
 class NonSemanticVersion(BaseVersion):
