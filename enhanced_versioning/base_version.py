@@ -45,7 +45,7 @@ class _Seq(_Comparable):
         return self.seq == other.seq
 
 
-class BaseVersion(_Comparable):
+class BaseVersion(_Comparable, str):
     """ Base version class """
     REVISION_DELIMITER = '.'
     PRE_RELEASE_DELIMITER = '-'

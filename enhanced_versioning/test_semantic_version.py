@@ -1,3 +1,5 @@
+import json
+
 from pytest import raises
 
 from enhanced_versioning.base_version import VersionError
@@ -141,3 +143,15 @@ def test_comparing_against_non_version():
     with raises(TypeError) as exception:
         SemanticVersion('1.0.0') == object()
     assert 'cannot compare' in repr(exception.value)
+
+
+def test_json_serialization():
+    """Test json serialization.
+
+    """
+    assert json.dumps(SemanticVersion('0.0.0')) == '"0.0.0"'
+    assert json.dumps(SemanticVersion('999.999.999')) == '"999.999.999"'
+    assert json.dumps(SemanticVersion('1.0.0-alpha')) == '"1.0.0-alpha"'
+    assert json.dumps(SemanticVersion('1.0.0-alpha.1')) == '"1.0.0-alpha.1"'
+    assert json.dumps(SemanticVersion('1.0.0+build.1')) == '"1.0.0+build.1"'
+    assert json.dumps(SemanticVersion('1.0.0-alpha.beta-gamma+build.11.e0f985a')) == '"1.0.0-alpha.beta-gamma+build.11.e0f985a"'

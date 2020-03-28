@@ -1,3 +1,5 @@
+import json
+
 from pytest import raises
 
 from enhanced_versioning.base_version import VersionError
@@ -165,3 +167,24 @@ def test_comparing_against_non_version():
     with raises(TypeError) as exception:
         NonSemanticVersion('1.0.0') == object()
     assert 'cannot compare' in repr(exception.value)
+
+
+def test_json_serialization():
+    """Test json serialization.
+
+    """
+    assert json.dumps(NonSemanticVersion('0')) == '"0"'
+    assert json.dumps(NonSemanticVersion('1.2')) == '"1.2"'
+    assert json.dumps(NonSemanticVersion('0.0.0')) == '"0.0.0"'
+    assert json.dumps(NonSemanticVersion('999.999.999.999')) == '"999.999.999.999"'
+    assert json.dumps(NonSemanticVersion('999.abc.999.999')) == '"999.abc.999.999"'
+    assert json.dumps(NonSemanticVersion('999.abc.999.999f')) == '"999.abc.999.999f"'
+    # Test multiple pre-releases and multiple hyphens in pre-releases
+    assert json.dumps(NonSemanticVersion('1.2.3.4-alpha-beta')) == '"1.2.3.4-alpha-beta"'
+    assert json.dumps(NonSemanticVersion('1.2.3-alpha-beta-gamma')) == '"1.2.3-alpha-beta-gamma"'
+    assert json.dumps(NonSemanticVersion('1.2.3-alpha-beta.gamma')) == '"1.2.3-alpha-beta.gamma"'
+
+    # Test multiple builds
+    assert json.dumps(NonSemanticVersion('1.2.3.4-alpha+beta')) == '"1.2.3.4-alpha+beta"'
+    assert json.dumps(NonSemanticVersion('1.2.3-alpha+beta-gamma')) == '"1.2.3-alpha+beta-gamma"'
+    assert json.dumps(NonSemanticVersion('1.2.3-alpha+beta.gamma')) == '"1.2.3-alpha+beta.gamma"'
