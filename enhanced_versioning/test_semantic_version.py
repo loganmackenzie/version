@@ -31,8 +31,8 @@ def test_section_2():
     assert SemanticVersion('1.9.0') < SemanticVersion('1.10.0') < SemanticVersion('1.11.0')
 
 
-def test_section_3():
-    """Section 3.
+def test_section_8():
+    """Section 8.
 
     When a major version number is incremented, the minor
     version and patch version MUST be reset to zero. When a
@@ -45,8 +45,8 @@ def test_section_3():
     assert SemanticVersion('2.1.7') < SemanticVersion('2.2.0')
 
 
-def test_section_10():
-    """Section 10: Pre-release version.
+def test_section_9():
+    """Section 9: Pre-release version.
 
     A pre-release version MAY be denoted by appending a dash
     and a series of dot separated identifiers immediately
@@ -75,8 +75,8 @@ def test_section_10():
     assert SemanticVersion('1.0.0-alpha') < SemanticVersion('1.0.0')
 
 
-def test_section_11():
-    """Section 11: Build version.
+def test_section_10():
+    """Section 10: Build version.
 
     A build version MAY be denoted by appending a plus sign
     and a series of dot separated identifiers immediately
@@ -92,8 +92,8 @@ def test_section_11():
     assert SemanticVersion('1.0.0+build.11.e0f985a').build == ['build', 11, 'e0f985a']
 
 
-def test_section_12():
-    """Section 12: Precedence rules.
+def test_section_11():
+    """Section 11: Precedence rules.
 
     Precedence MUST be calculated by separating the version
     into major, minor, patch, pre-release, and build

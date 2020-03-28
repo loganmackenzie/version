@@ -45,8 +45,8 @@ def test_nonsemantic_versions():
     assert NonSemanticVersion('13') < NonSemanticVersion('1.0') < NonSemanticVersion('1.0.1')
 
 
-def test_section_10():
-    """Semantic Version Section 10: Pre-release version.
+def test_section_9():
+    """Semantic Version Section 9: Pre-release version.
 
     A pre-release version MAY be denoted by appending a dash
     and a series of dot separated identifiers immediately
@@ -77,8 +77,8 @@ def test_section_10():
     assert NonSemanticVersion('1.0.0-alpha') < NonSemanticVersion('1.0.0')
 
 
-def test_section_11():
-    """Semantic Version Section 11: Build version.
+def test_section_10():
+    """Semantic Version Section 10: Build version.
 
     A build version MAY be denoted by appending a plus sign
     and a series of dot separated identifiers immediately
@@ -96,8 +96,8 @@ def test_section_11():
     assert NonSemanticVersion('1.0.0.f+build.11.e0f985a').build == ['build', 11, 'e0f985a']
 
 
-def test_section_12():
-    """Section 12: Precedence rules.
+def test_section_11():
+    """Section 11: Precedence rules.
 
     Precedence MUST be calculated by separating the version
     into major, minor, patch, pre-release, and build
