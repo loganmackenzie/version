@@ -51,11 +51,15 @@ class NonSemanticVersion(BaseVersion):
             version, build = version.split(self.BUILD_DELIMITER)
             assert self.VALIDATION_REGEX.match(build)
             self.build = self._make_group(build)
+            # Assert that there are not any empty sequences in the build versions
+            assert '' not in self.build
         # Step 2: Try to split on '-' nad pull the pre-release version off.
         if self.PRE_RELEASE_DELIMITER in version:
-            version, pre_release = version.split(self.PRE_RELEASE_DELIMITER)
+            version, pre_release = version.split(self.PRE_RELEASE_DELIMITER, 1)
             assert self.VALIDATION_REGEX.match(pre_release)
             self.pre_release = self._make_group(pre_release)
+            # Assert that there are not any empty sequences in the pre-releases
+            assert '' not in self.pre_release
         # Step 3: Split on '.' and parse revisions until we run out.
         while self.REVISION_DELIMITER in version:
             rev, version = version.split(self.REVISION_DELIMITER, 1)
