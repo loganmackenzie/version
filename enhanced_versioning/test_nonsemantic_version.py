@@ -27,6 +27,21 @@ def test_nonsemantic_versions():
     assert repr(NonSemanticVersion('999.abc.999.999')) == "NonSemanticVersion('999.abc.999.999')"
     assert str(NonSemanticVersion('999.abc.999.999f')) == '999.abc.999.999f'
     assert repr(NonSemanticVersion('999.abc.999.999f')) == "NonSemanticVersion('999.abc.999.999f')"
+    # Test multiple pre-releases and multiple hyphens in pre-releases
+    assert str(NonSemanticVersion('1.2.3.4-alpha-beta')) == '1.2.3.4-alpha-beta'
+    assert repr(NonSemanticVersion('1.2.3.4-alpha-beta')) == "NonSemanticVersion('1.2.3.4-alpha-beta')"
+    assert str(NonSemanticVersion('1.2.3-alpha-beta-gamma')) == '1.2.3-alpha-beta-gamma'
+    assert repr(NonSemanticVersion('1.2.3-alpha-beta-gamma')) == "NonSemanticVersion('1.2.3-alpha-beta-gamma')"
+    assert str(NonSemanticVersion('1.2.3-alpha-beta.gamma')) == '1.2.3-alpha-beta.gamma'
+    assert repr(NonSemanticVersion('1.2.3-alpha-beta.gamma')) == "NonSemanticVersion('1.2.3-alpha-beta.gamma')"
+
+    # Test multiple builds
+    assert str(NonSemanticVersion('1.2.3.4-alpha+beta')) == '1.2.3.4-alpha+beta'
+    assert repr(NonSemanticVersion('1.2.3.4-alpha+beta')) == "NonSemanticVersion('1.2.3.4-alpha+beta')"
+    assert str(NonSemanticVersion('1.2.3-alpha+beta-gamma')) == '1.2.3-alpha+beta-gamma'
+    assert repr(NonSemanticVersion('1.2.3-alpha+beta-gamma')) == "NonSemanticVersion('1.2.3-alpha+beta-gamma')"
+    assert str(NonSemanticVersion('1.2.3-alpha+beta.gamma')) == '1.2.3-alpha+beta.gamma'
+    assert repr(NonSemanticVersion('1.2.3-alpha+beta.gamma')) == "NonSemanticVersion('1.2.3-alpha+beta.gamma')"
 
     with raises(VersionError):
         NonSemanticVersion('_._._')
@@ -72,6 +87,8 @@ def test_section_9():
         NonSemanticVersion('1.0.0-')
     with raises(VersionError):
         NonSemanticVersion('1.0.0-$#%')
+    with raises(VersionError):
+        NonSemanticVersion('1.0.0.0-alpha..1').pre_release
 
     assert NonSemanticVersion('1.0.0') > NonSemanticVersion('1.0.0-alpha')
     assert NonSemanticVersion('1.0.0-alpha') < NonSemanticVersion('1.0.0')
@@ -94,6 +111,9 @@ def test_section_10():
     assert NonSemanticVersion('1.0.0+build.11.e0f985a').build == ['build', 11, 'e0f985a']
     assert NonSemanticVersion('1.0.0.f+build.1').build == ['build', 1]
     assert NonSemanticVersion('1.0.0.f+build.11.e0f985a').build == ['build', 11, 'e0f985a']
+
+    with raises(VersionError):
+        NonSemanticVersion('1.0.0.0-alpha+build.1..11')
 
 
 def test_section_11():
