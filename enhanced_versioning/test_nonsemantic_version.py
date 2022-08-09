@@ -62,6 +62,22 @@ def test_nonsemantic_versions():
     assert NonSemanticVersion('13') < NonSemanticVersion('1.0') < NonSemanticVersion('1.0.1')
 
 
+def test_section_2():
+    """Non-Semantic Version Section 2: Revisions.
+
+    Revisions must consist of at least one of the integer
+    part and/or the character part. The character part must
+    begin with an alphabetical character, but may contain
+    integers, but these will be compared as characters
+    rather than as integer values.
+
+    """
+    assert NonSemanticVersion('1.0.2a1') < NonSemanticVersion('1.0.3a1')
+    assert NonSemanticVersion('1.0.2a1') < NonSemanticVersion('1.0.2a2')
+    assert NonSemanticVersion('1.0.2a1') < NonSemanticVersion('1.0.2b0')
+    assert NonSemanticVersion('1.0.2a10') < NonSemanticVersion('1.0.2b2')
+
+
 def test_section_9():
     """Semantic Version Section 9: Pre-release version.
 

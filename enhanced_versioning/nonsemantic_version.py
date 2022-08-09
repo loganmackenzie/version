@@ -13,7 +13,7 @@ from enhanced_versioning.base_version import BaseVersion, VersionError, _Seq
 class NonSemanticVersion(BaseVersion):
     """ Support non-semantic versions """
     # Note: positive lookahead to handle an empty string.
-    REV_REGEX = re.compile(r'^(?=.*.)(\d*)([A-Za-z]*)$')
+    REV_REGEX = re.compile(r'^(?=.*.)(\d*)([A-Za-z]*[A-Za-z0-9]*)$')
     VALIDATION_REGEX = re.compile(r'[.0-9A-Za-z-]+')
 
     def __init__(self, version):
